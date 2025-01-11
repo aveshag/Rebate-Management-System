@@ -1,7 +1,9 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text, \
+    ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
+metadata = Base.metadata
 
 
 class RebateProgram(Base):
@@ -20,14 +22,18 @@ class Transaction(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     amount = Column(Float, nullable=False)
     transaction_date = Column(DateTime(False), nullable=False)
-    rebate_program_id = Column(Integer, ForeignKey('rebate_programs.id'), nullable=False)
+    rebate_program_id = Column(
+        ForeignKey('rebate_programs.id', ondelete='RESTRICT'),
+        nullable=False)
     last_update_time = Column(DateTime(False), nullable=False)
 
 
 class RebateClaim(Base):
     __tablename__ = 'rebate_claims'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    transaction_id = Column(Integer, ForeignKey('transactions.transaction_id'), nullable=False)
+    transaction_id = Column(
+        ForeignKey('transactions.id', ondelete='RESTRICT'),
+        nullable=False)
     claim_amount = Column(Float, nullable=False)
     claim_status = Column(String, default='pending')
     claim_date = Column(DateTime(False), nullable=False)
