@@ -59,9 +59,12 @@ class DBSessionManager(metaclass=Singleton):
             yield session
             if auto_commit:
                 await session.commit()
-                await session.flush()
         except Exception:
             await session.rollback()
             raise
         finally:
             await session.close()
+
+    async def dispose_engine(self):
+        if self._engine:
+            await self._engine.dispose()

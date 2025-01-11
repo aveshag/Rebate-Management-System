@@ -3,7 +3,9 @@
 A rebate management system that handles rebate program data, calculates rebates, and provides endpoints for basic
 reporting
 
-## Steps to generate version file on schema change
+## Steps to generate version file on schema change using Alembic
+Alembic is an amazing tool to use with SQLAlchemy to keep the database 
+in sync with the application version without any SQL scripts.
 
 1. Navigate to folder "src/"
 2. Autogenerate \

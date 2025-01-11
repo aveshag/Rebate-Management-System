@@ -8,6 +8,13 @@ pip install -r requirements.txt
 echo "Requirements installed"
 echo
 
+echo "Setting environment variables..."
+# Export variables from the .env file
+set -a # Automatically export all variables
+source .env
+set +a # Stop exporting
+echo "Database name: $DB_NAME"
+
 echo "Running alembic migration..."
 alembic -c src/config/alembic.ini upgrade head
 
