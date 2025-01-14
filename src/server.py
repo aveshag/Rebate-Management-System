@@ -2,20 +2,25 @@ import logging
 
 from fastapi import FastAPI
 from uvicorn import Config, Server
+
 from src.constants import API_PREFIX
-from src.routes import router
+from src.controllers import register_controllers
+from src.routes import register_routes
 
 logger = logging.getLogger(__name__)
 
 
 def __init_app():
-    return FastAPI(title="Rebate Management System")
+    return FastAPI(
+        title="Rebate Management System",
+        version="1.0.0"
+    )
 
 
 async def start_server(app):
     # TODO: use env variables
     host = "0.0.0.0"
-    port = 8456
+    port = 8420
 
     logger.info(f"Starting server on {host}:{port}")
     server_config = Config(app=app, host=host, port=port)
@@ -23,7 +28,8 @@ async def start_server(app):
     await server.serve()
 
 
-def __register_controllers(app):
+def __register_routes(app):
+    router = register_routes()
     app.include_router(router=router, prefix=API_PREFIX)
 
 
@@ -34,5 +40,6 @@ async def register_server():
     def root():
         return 'Welcome to Rebate Management System'
 
-    __register_controllers(app)
+    register_controllers()
+    __register_routes(app)
     await start_server(app)
