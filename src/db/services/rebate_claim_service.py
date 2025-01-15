@@ -1,7 +1,6 @@
 import logging
 
 from src.db.dao.rebate_claim_dao import RebateClaimDAO
-from src.utils import objects_to_json
 
 logger = logging.getLogger(__name__)
 
@@ -17,14 +16,14 @@ class RebateClaimService:
         """
         Fetch all rebate claims.
         """
-        rebate_claims = await self.rebate_claim_dao.get_all()
-        return objects_to_json(rebate_claims)
+        return await self.rebate_claim_dao.get_all()
 
     async def get_claim_by_id(self, claim_id):
         """
         Fetch a rebate claim by its primary key (ID).
         """
-        return await self.rebate_claim_dao.get_by_column_value("id", claim_id)
+        return await self.rebate_claim_dao.get_by_column_value(
+            "id", claim_id)
 
     async def create_claim(self, data):
         """

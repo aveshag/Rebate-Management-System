@@ -1,7 +1,6 @@
 import logging
 
 from src.db.dao.transaction_dao import TransactionDAO
-from src.utils import objects_to_json
 
 logger = logging.getLogger(__name__)
 
@@ -17,15 +16,14 @@ class TransactionService:
         """
         Fetch all transactions.
         """
-        transactions = await self.transaction_dao.get_all()
-        return objects_to_json(transactions)
+        return await self.transaction_dao.get_all()
 
     async def get_transaction_by_id(self, transaction_id):
         """
         Fetch a transaction by its primary key (ID).
         """
-        return await self.transaction_dao.get_by_column_value("id",
-                                                              transaction_id)
+        return await self.transaction_dao.get_by_column_value(
+            "id", transaction_id)
 
     async def create_transaction(self, data):
         """

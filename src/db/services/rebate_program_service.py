@@ -1,7 +1,6 @@
 import logging
 
 from src.db.dao.rebate_program_dao import RebateProgramDAO
-from src.utils import objects_to_json
 
 logger = logging.getLogger(__name__)
 
@@ -17,15 +16,14 @@ class RebateProgramService:
         """
         Fetch all rebate programs.
         """
-        rebate_programs = await self.rebate_program_dao.get_all()
-        return objects_to_json(rebate_programs)
+        return await self.rebate_program_dao.get_all()
 
     async def get_program_by_id(self, program_id):
         """
         Fetch a rebate program by its primary key (ID).
         """
-        return await self.rebate_program_dao.get_by_column_value("id",
-                                                                 program_id)
+        return await self.rebate_program_dao.get_by_column_value(
+            "id", program_id)
 
     async def create_program(self, data):
         """
