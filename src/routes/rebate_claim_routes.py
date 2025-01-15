@@ -1,17 +1,9 @@
-from datetime import datetime
-
 from fastapi import APIRouter
-from pydantic import BaseModel
 
 from src.controllers import claim_controller
+from src.routes.api_models import RebateClaimRequest
 
 router = APIRouter()
-
-
-class RebateClaimRequest(BaseModel):
-    transaction_id: str
-    claim_amount: int
-    last_update_time: datetime
 
 
 @router.post(

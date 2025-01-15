@@ -5,6 +5,7 @@ from uvicorn import Config, Server
 
 from src.constants import API_PREFIX
 from src.controllers import register_controllers
+from src.exception_handlers import register_exception_handlers
 from src.routes import register_routes
 
 logger = logging.getLogger(__name__)
@@ -36,7 +37,9 @@ def __register_routes(app):
 async def register_server():
     app = __init_app()
 
-    @app.get("/")
+    register_exception_handlers(app)
+
+    @app.get("/test", tags=["test"])
     def root():
         return 'Welcome to Rebate Management System'
 

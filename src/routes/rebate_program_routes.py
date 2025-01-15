@@ -1,19 +1,9 @@
-from datetime import datetime
-
 from fastapi import APIRouter
-from pydantic import BaseModel
 
 from src.controllers import program_controller
+from src.routes.api_models import RebateProgramRequest
 
 router = APIRouter()
-
-
-class RebateProgramRequest(BaseModel):
-    program_name: str
-    rebate_percentage: int
-    start_date: datetime
-    end_date: datetime
-    eligibility_criteria: str
 
 
 @router.post(

@@ -18,4 +18,5 @@ class RebateProgramController:
 
     async def get_all_programs(self):
         rebate_programs = await self.__program_service.get_all_programs()
-        return create_response(objects_to_json(rebate_programs), 200)
+        return create_response(objects_to_json(rebate_programs,
+                                               "program_name"), 200)

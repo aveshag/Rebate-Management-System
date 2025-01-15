@@ -15,13 +15,14 @@ def get_current_time():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
-def objects_to_json(objs):
+def objects_to_json(objs, key_field="id"):
     """
     Convert objects to json
     :param objs: List of orm objects
+    :param key_field: Field to be used as key in json payload
     :return: JSON objects
     """
-    json_objs = []
+    json_payload = dict()
     for obj in objs:
         json_obj = dict()
         for key in obj.__dict__.keys():
@@ -35,5 +36,5 @@ def objects_to_json(objs):
             else:
                 json_obj[key] = value
 
-        json_objs.append(json_obj)
-    return json_objs
+        json_payload[json_obj[key_field]] = json_obj
+    return json_payload

@@ -1,17 +1,9 @@
-from datetime import datetime
-
 from fastapi import APIRouter
-from pydantic import BaseModel
 
 from src.controllers import transaction_controller
+from src.routes.api_models import TransactionRequest
 
 router = APIRouter()
-
-
-class TransactionRequest(BaseModel):
-    amount: float
-    transaction_date: datetime
-    rebate_program_id: str
 
 
 @router.post(
