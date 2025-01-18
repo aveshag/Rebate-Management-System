@@ -1,18 +1,14 @@
 import asyncio
-
-from src.server import register_server
-from src.constants import LOGGER_CONFIG
 from logging import config, getLogger
 
-from json import load
+from src.server import register_server
+from src.utils import get_logger_config
 
 logger = getLogger(__name__)
 
 
 def __init_logger():
-    with open(LOGGER_CONFIG, "r") as f:
-        config_dict = load(f)
-        config.dictConfig(config_dict)
+    config.dictConfig(get_logger_config())
 
 
 async def main():

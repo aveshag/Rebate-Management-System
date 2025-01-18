@@ -1,9 +1,13 @@
 import logging
 
+from sqlalchemy import insert
+from sqlalchemy.dialects.postgresql.asyncpg import AsyncAdapt_asyncpg_dbapi
+from sqlalchemy.exc import IntegrityError, NoResultFound
 from sqlalchemy.future import select
-from sqlalchemy.orm.exc import NoResultFound
 
 from src.db.db_session_manager import DBSessionManager
+from src.exceptions.db_exceptions import IntegrityException
+from src.utils import parse_db_integrity_error_message
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +47,22 @@ class GenericDAO:
             logger.error(f"Error retrieving a record: {e}")
             raise e
 
+    @staticmethod
+    def raise_integrity_error(error):
+        if isinstance(error.orig, AsyncAdapt_asyncpg_dbapi.IntegrityError):
+            error_dict = parse_db_integrity_error_message(error.orig.__str__())
+            error_type = error_dict.get("error_type", "Unknown")
+            key = error_dict.get("key", None)
+            value = error_dict.get("value", None)
+            msg = None
+            if error_type == "UniqueViolationError" and key:
+                msg = f"{key} with value {value} already exists"
+            elif error_type == "ForeignKeyViolationError" and key:
+                msg = f"{key} with value {value} does not exist"
+            if msg:
+                raise IntegrityException(msg)
+        raise error
+
     async def create(self, data):
         """
         Insert a new row into the database.
@@ -50,8 +70,15 @@ class GenericDAO:
         """
         try:
             async with self.db.get_session_context() as session:
-                new_record = self.model(**data)
-                session.add(new_record)
+                record_id = await session.execute(insert(self.model).values(
+                    **data).returning(self.model.__table__.c.id))
+                await session.commit()
+                new_record = await session.get(self.model,
+                                               record_id.scalar_one())
+                session.expunge_all()
+                return new_record
+        except IntegrityError as e:
+            self.raise_integrity_error(e)
         except Exception as e:
             logger.error(f"Error creating record: {e}")
             raise e

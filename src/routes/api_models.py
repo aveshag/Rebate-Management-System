@@ -1,15 +1,6 @@
 from datetime import datetime
-from typing import List
 
 from pydantic import Field, field_validator, BaseModel
-
-
-class ErrorDetail(BaseModel):
-    message: str
-
-
-class ErrorResponse(BaseModel):
-    errors: List[ErrorDetail]
 
 
 class RebateProgramRequest(BaseModel):

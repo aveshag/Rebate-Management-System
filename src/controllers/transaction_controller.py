@@ -1,7 +1,8 @@
 import logging
 
+from src.controllers.controller_utils import create_response
 from src.db.services.transaction_service import TransactionService
-from src.utils import create_response, objects_to_json
+from src.utils import map_objs_to_dict, map_obj_to_dict
 
 logger = logging.getLogger(__name__)
 
@@ -12,10 +13,9 @@ class TransactionController:
 
     async def submit_transaction(self, payload):
         payload = payload.dict()
-        await self.__transaction_service.create_transaction(payload)
-        return create_response(
-            {"message": "Transaction recorded successfully"}, 201)
+        response = await self.__transaction_service.create_transaction(payload)
+        return create_response(map_obj_to_dict(response), 201)
 
     async def get_all_transactions(self):
         transactions = await self.__transaction_service.get_all_transactions()
-        return create_response(objects_to_json(transactions), 200)
+        return create_response(map_objs_to_dict(transactions), 200)

@@ -5,8 +5,9 @@ from uvicorn import Config, Server
 
 from src.constants import API_PREFIX
 from src.controllers import register_controllers
-from src.exception_handlers import register_exception_handlers
+from src.exceptions.exception_handlers import register_exception_handlers
 from src.routes import register_routes
+from src.utils import get_logger_config
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,8 @@ async def start_server(app):
     port = 8420
 
     logger.info(f"Starting server on {host}:{port}")
-    server_config = Config(app=app, host=host, port=port)
+    server_config = Config(app=app, host=host, port=port,
+                           log_config=get_logger_config())
     server = Server(config=server_config)
     await server.serve()
 

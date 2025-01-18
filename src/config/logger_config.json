@@ -23,7 +23,8 @@
     "file": {
       "class": "logging.FileHandler",
       "filename": "app.log",
-      "formatter": "default"
+      "formatter": "default",
+      "mode": "w"
     }
   }
 }
