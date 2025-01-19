@@ -29,5 +29,5 @@ echo "Running alembic migration..."
 alembic -c src/config/alembic.ini upgrade head
 
 echo "Running Rebate System..."
-python3 main.py
+PYTHON main.py
 deactivate

@@ -22,7 +22,7 @@ def __init_app():
 
 async def start_server(app):
     host = environ.get('HOST', "0.0.0.0")
-    port = int(environ.get('PORT', 5432))
+    port = int(environ.get('PORT', 8420))
 
     logger.info(f"Starting server on {host}:{port}")
     server_config = Config(app=app, host=host, port=port,
