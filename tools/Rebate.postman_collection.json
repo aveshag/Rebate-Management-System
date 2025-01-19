@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "f54fd03c-1c51-428b-a12e-f8eb71afd228",
+		"name": "Rebate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17046595"
+	},
+	"item": [
+		{
+			"name": "Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/test",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create rebate program",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"program_name\": \"Program2\",\n    \"rebate_percentage\": 80,\n    \"start_date\": \"2025-01-15\",\n    \"end_date\": \"2025-04-15\",\n    \"eligibility_criteria\": \"Must have spent more than 20 Lakhs\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/rebate_programs",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"rebate_programs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get rebate programs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/rebate_programs",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"rebate_programs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 90.1,\n    \"transaction_date\": \"2025-02-16\",\n    \"rebate_program_id\": \"f76172e7-8b6b-4677-857e-551542c824ae\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get transactions by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/transactions/f1848659-1dbe-47d7-8b73-a848a3f76c9c?include_rebate=true",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"transactions",
+						"f1848659-1dbe-47d7-8b73-a848a3f76c9c"
+					],
+					"query": [
+						{
+							"key": "include_rebate",
+							"value": "true",
+							"description": "true if rebate amount to be included"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create rebate claim",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"transaction_id\": \"f1848659-1dbe-47d7-8b73-a848a3f76c9c\",\n    \"claim_amount\": \"40\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/rebate_claims",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"rebate_claims"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get rebate claims",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/rebate_claims",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"rebate_claims"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get rebate claims summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/v1/rebate_claims/summary?start_date=2025-01-19 16:30:10&end_date=2025-01-20 16:57:16",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"v1",
+						"rebate_claims",
+						"summary"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "2025-01-19 16:30:10"
+						},
+						{
+							"key": "end_date",
+							"value": "2025-01-20 16:57:16"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
