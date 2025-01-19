@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from pydantic import Field, field_validator, BaseModel
@@ -30,6 +31,7 @@ class RebateClaimRequest(BaseModel):
 
 
 class TransactionRequest(BaseModel):
-    amount: float
+    amount: float = Field(
+        ..., ge=0, description="Transaction amount must be greater than 0.")
     transaction_date: datetime
-    rebate_program_id: str
+    rebate_program_id: uuid.UUID

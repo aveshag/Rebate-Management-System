@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError, NoResultFound
 from sqlalchemy.future import select
 
 from src.db.db_session_manager import DBSessionManager
-from src.exceptions.db_exceptions import IntegrityException
+from src.exceptions.db_exceptions import DBException
 from src.utils import parse_db_integrity_error_message
 
 logger = logging.getLogger(__name__)
@@ -60,7 +60,7 @@ class GenericDAO:
             elif error_type == "ForeignKeyViolationError" and key:
                 msg = f"{key} with value {value} does not exist"
             if msg:
-                raise IntegrityException(msg)
+                raise DBException(msg)
         raise error
 
     async def create(self, data):
