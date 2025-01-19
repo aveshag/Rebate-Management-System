@@ -62,20 +62,19 @@ class TransactionDAO(GenericDAO):
             Retrieves a transaction along with its computed rebate amount.
         """
         try:
-            async with self.db.get_session_context() as session:
-                query = (
-                    select(
-                        *[getattr(Transaction, column.name) for column in
-                          Transaction.__table__.columns],
-                        (Transaction.amount *
-                         RebateProgram.rebate_percentage / 100).label(
-                            "rebate_amount")
-                    )
-                    .join(RebateProgram,
-                          Transaction.rebate_program_id == RebateProgram.id)
-                    .where(Transaction.id == transaction_id)
+            query = (
+                select(
+                    *[getattr(Transaction, column.name) for column in
+                      Transaction.__table__.columns],
+                    (Transaction.amount *
+                     RebateProgram.rebate_percentage / 100).label(
+                        "rebate_amount")
                 )
-
+                .join(RebateProgram,
+                      Transaction.rebate_program_id == RebateProgram.id)
+                .where(Transaction.id == transaction_id)
+            )
+            async with self.db.get_session_context() as session:
                 result = await session.execute(query)
                 result = result.first()
                 transaction_with_rebate = None

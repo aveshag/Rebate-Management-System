@@ -18,3 +18,8 @@ class RebateClaimController:
     async def get_all_claims(self):
         rebate_claims = await self.__claim_service.get_all_claims()
         return create_response(map_objs_to_dict(rebate_claims), 200)
+
+    async def get_claims_summary(self, start_date, end_date):
+        claim_summary = await self.__claim_service.get_claims_summary(
+            start_date, end_date)
+        return create_response(map_obj_to_dict(claim_summary), 200)

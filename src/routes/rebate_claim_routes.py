@@ -1,3 +1,6 @@
+from datetime import datetime
+from typing import Optional
+
 from fastapi import APIRouter
 
 from src.controllers import claim_controller
@@ -20,3 +23,12 @@ async def claim_rebate(request: RebateClaimRequest):
 )
 async def get_rebate_claims():
     return await claim_controller.get_all_claims()
+
+
+@router.get(
+    '/summary', tags=['Rebate Claim'],
+    summary="Get rebate claims summary"
+)
+async def get_rebate_claims(start_date: Optional[datetime] = None,
+                            end_date: Optional[datetime] = None):
+    return await claim_controller.get_claims_summary(start_date, end_date)

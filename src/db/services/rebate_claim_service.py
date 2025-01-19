@@ -18,6 +18,12 @@ class RebateClaimService:
         """
         return await self.rebate_claim_dao.get_all()
 
+    async def get_claims_summary(self, start_date=None, end_date=None):
+        """
+        Get summary of claims between start_date and end_date.
+        """
+        return await self.rebate_claim_dao.get_claims_summary(start_date, end_date)
+
     async def get_claim_by_id(self, claim_id):
         """
         Fetch a rebate claim by its primary key (ID).
