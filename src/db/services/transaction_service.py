@@ -1,6 +1,7 @@
 import logging
 
 from src.db.dao.transaction_dao import TransactionDAO
+from src.exceptions.db_exceptions import NotFoundException
 
 logger = logging.getLogger(__name__)
 
@@ -18,12 +19,20 @@ class TransactionService:
         """
         return await self.transaction_dao.get_all()
 
-    async def get_transaction_by_id(self, transaction_id):
+    async def get_transaction_by_id(self, transaction_id, include_rebate=False):
         """
         Fetch a transaction by its primary key (ID).
         """
-        return await self.transaction_dao.get_by_column_value(
-            "id", transaction_id)
+        if include_rebate:
+            transaction = await self.transaction_dao.get_transaction_with_rebate(
+                transaction_id)
+        else:
+            transaction = await self.transaction_dao.get_by_column_value(
+                "id", transaction_id)
+        if not transaction:
+            raise NotFoundException(
+                f"Transaction with ID {transaction_id} not found.")
+        return transaction
 
     async def create_transaction(self, data):
         """

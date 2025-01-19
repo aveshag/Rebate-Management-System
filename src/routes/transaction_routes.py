@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi import APIRouter
 
 from src.controllers import transaction_controller
@@ -18,5 +20,15 @@ async def submit_transaction(request: TransactionRequest):
     '', tags=['Transaction'],
     summary="Get all transactions"
 )
-async def get_rebate_claims():
+async def get_transactions():
     return await transaction_controller.get_all_transactions()
+
+
+@router.get(
+    '/{transaction_id}', tags=['Transaction'],
+    summary="Get a transaction"
+)
+async def get_transaction_by_id(transaction_id: uuid.UUID,
+                                include_rebate: bool = False):
+    return await transaction_controller.get_transaction_by_id(transaction_id,
+                                                              include_rebate)

@@ -19,3 +19,8 @@ class TransactionController:
     async def get_all_transactions(self):
         transactions = await self.__transaction_service.get_all_transactions()
         return create_response(map_objs_to_dict(transactions), 200)
+
+    async def get_transaction_by_id(self, transaction_id, include_rebate):
+        transaction = await self.__transaction_service.get_transaction_by_id(
+            transaction_id, include_rebate)
+        return create_response(map_obj_to_dict(transaction), 200)

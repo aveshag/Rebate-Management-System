@@ -4,9 +4,11 @@ from typing import Optional
 from sqlalchemy import insert, select
 
 from src.db.dao.generic_dao import GenericDAO
+from src.db.models.helper_models import TransactionRebateModel
 from src.db.models.rebate_models import RebateProgram
 from src.db.models.rebate_models import Transaction
-from src.exceptions.db_exceptions import DBException
+from src.exceptions.db_exceptions import ValidationsExceptions, \
+    NotFoundException
 
 logger = logging.getLogger(__name__)
 
@@ -33,13 +35,13 @@ class TransactionDAO(GenericDAO):
                     RebateProgram] = result.scalar_one_or_none()
 
                 if not rebate_program:
-                    raise DBException(
+                    raise NotFoundException(
                         f"Rebate program with ID {rebate_program_id} not found.")
 
                 transaction_start_date = data.get("transaction_date")
                 if rebate_program.start_date > transaction_start_date \
                         or transaction_start_date > rebate_program.end_date:
-                    raise DBException(
+                    raise ValidationsExceptions(
                         "Transaction start date must fall within the rebate program's period.")
 
                 record_id = await session.execute(
@@ -54,4 +56,31 @@ class TransactionDAO(GenericDAO):
                 return new_record
         except Exception as e:
             logger.error(f"Error creating record: {e}")
+            raise e
+
+    async def get_transaction_with_rebate(self, transaction_id):
+        try:
+            async with self.db.get_session_context() as session:
+                query = (
+                    select(
+                        *[getattr(Transaction, column.name) for column in
+                          Transaction.__table__.columns],
+                        (Transaction.amount *
+                         RebateProgram.rebate_percentage / 100).label(
+                            "rebate_amount")
+                    )
+                    .join(RebateProgram,
+                          Transaction.rebate_program_id == RebateProgram.id)
+                    .where(Transaction.id == transaction_id)
+                )
+
+                result = await session.execute(query)
+                result = result.first()
+                transaction_with_rebate = None
+                if result:
+                    transaction_with_rebate = TransactionRebateModel(
+                        **result._mapping)
+                return transaction_with_rebate
+        except Exception as e:
+            logger.error(f"Error fetching transaction with rebate: {e}")
             raise e
