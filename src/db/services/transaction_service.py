@@ -23,6 +23,11 @@ class TransactionService:
         """
         Fetch a transaction by its primary key (ID).
         """
+        # Calculating the rebate amount dynamically during retrieval.
+        # Alternatively, the rebate amount could be saved during transaction
+        # creation. However, this approach has a tradeoff: if the rebate
+        # percentage changes later, all related transaction entries would
+        # need to be updated, leading to potential inconsistencies.
         if include_rebate:
             transaction = await self.transaction_dao.get_transaction_with_rebate(
                 transaction_id)

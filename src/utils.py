@@ -2,6 +2,7 @@ import logging
 import re
 import uuid
 from datetime import datetime
+from enum import Enum
 from json import load
 from typing import Optional, Match, List, Dict
 
@@ -10,6 +11,12 @@ from fastapi.responses import JSONResponse
 from src.constants import LOGGER_CONFIG
 
 logger = logging.getLogger(__name__)
+
+
+class ClaimStatus(Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
 
 
 def get_logger_config():

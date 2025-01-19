@@ -42,6 +42,7 @@ class RebateClaim(Base):
         nullable=False)
     claim_amount = Column(Float, nullable=False)
     claim_status = Column(String, default='pending')
-    claim_date = Column(DateTime(False), nullable=False)
+    claim_date = Column(DateTime(False), default=get_current_time,
+                        nullable=False)
     last_update_time = Column(DateTime(False), default=get_current_time,
                               nullable=False)

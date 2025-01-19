@@ -26,8 +26,8 @@ class RebateProgramRequest(BaseModel):
 
 
 class RebateClaimRequest(BaseModel):
-    transaction_id: str
-    claim_amount: int
+    transaction_id: uuid.UUID
+    claim_amount: float
 
 
 class TransactionRequest(BaseModel):
