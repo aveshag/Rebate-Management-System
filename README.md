@@ -4,6 +4,7 @@ A rebate management system that handles rebate program data, calculates rebates,
 reporting
 
 # How to Run
+
 Before you proceed, ensure you have cloned the repository and navigated into the project directory:
 
    ```
@@ -12,11 +13,12 @@ Before you proceed, ensure you have cloned the repository and navigated into the
    ```
 
 ## Option 1: Using Docker Compose
+
 1. Make sure you have Docker and Docker Compose installed on your system.
 2. Set up the environment variables in the `.env` file located in the project root.
 3. Run the following command to start the application:
    ```
-    docker compose up -d
+   docker compose up -d
    ```
 4. To stop the Docker containers, run the following command:
    ```
@@ -24,6 +26,7 @@ Before you proceed, ensure you have cloned the repository and navigated into the
    ```
 
 ## Option 2: Running Locally
+
 1. Ensure a PostgreSQL database is running. You can run one locally using Docker:
    ```
    docker run --name rebate-postgres -e POSTGRES_USER=<user> -e POSTGRES_PASSWORD=<password> -e POSTGRES_DB=<db_name> -p 5432:5432 -d postgres
@@ -41,8 +44,6 @@ Before you proceed, ensure you have cloned the repository and navigated into the
 
 This documentation provides details about the API endpoints related to rebate claims, rebate programs, and transactions.
 
----
-
 ## Base URL
 
 The base URL for all API requests will depend on the deployment environment. Examples:
@@ -50,7 +51,17 @@ The base URL for all API requests will depend on the deployment environment. Exa
 - **Development:** `http://localhost:8420/`
 - **Production:** `https://rebate.com/`
 
----
+## Swagger Documentation
+
+Swagger documentation for the API can be accessed in the browser at the following URL:
+
+   ```
+   https://localhost:8420/docs
+   ```
+
+## Postman Collection
+
+A Postman collection is available in the `tools` folder for easier API testing.
 
 ## Endpoints
 
@@ -334,8 +345,10 @@ The base URL for all API requests will depend on the deployment environment. Exa
 
 ##### Query Parameters
 
-- **`start_date`** *(optional)*: Start date for filtering the claims summary (format: `YYYY-MM-DDTHH:MM:SS`, e.g.: `2025-01-19 16:30:10`).
-- **`end_date`** *(optional)*: End date for filtering the claims summary (format: `YYYY-MM-DDTHH:MM:SS`, e.g.: `2025-01-19 20:50:10`).
+- **`start_date`** *(optional)*: Start date for filtering the claims summary (format: `YYYY-MM-DDTHH:MM:SS`, e.g.:
+  `2025-01-19 16:30:10`).
+- **`end_date`** *(optional)*: End date for filtering the claims summary (format: `YYYY-MM-DDTHH:MM:SS`, e.g.:
+  `2025-01-19 20:50:10`).
 
 ##### Example Response
 
@@ -353,5 +366,7 @@ The base URL for all API requests will depend on the deployment environment. Exa
 ---
 
 # Credits
-This project uses the [wait-for-it.sh](https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh) script for waiting for the database to be ready.
+
+This project uses the [wait-for-it.sh](https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh)
+script for waiting for the database to be ready.
 
