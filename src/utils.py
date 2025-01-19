@@ -49,9 +49,6 @@ def get_current_time():
 def map_objs_to_dict(objs, key_field="id"):
     """
     Convert objects to json
-    :param objs: List of orm objects
-    :param key_field: Field to be used as key in json payload
-    :return: JSON objects
     """
     json_payload = dict()
     for obj in objs:
@@ -62,6 +59,9 @@ def map_objs_to_dict(objs, key_field="id"):
 
 
 def map_obj_to_dict(obj):
+    """
+    Convert object to json
+    """
     keys = obj.__dict__.keys()
     obj_dict = dict()
     for key in keys:

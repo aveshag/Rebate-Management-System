@@ -6,6 +6,9 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 
 class Singleton(type):
+    """
+    A metaclass to implement the Singleton design pattern.
+    """
     _instance = None
     _lock = threading.Lock()
 
@@ -54,6 +57,13 @@ class DBSessionManager(metaclass=Singleton):
 
     @contextlib.asynccontextmanager
     async def get_session_context(self, auto_commit: bool = True):
+        """
+        Provide an asynchronous context manager for database session operations.
+        This context manager creates a new session, commits changes if
+        `auto_commit` is enabled, and handles errors by rolling back the
+        session if an exception occurs. Regardless of success or failure,
+        the session is closed at the end of the context.
+        """
         session = self._session_factory()
         try:
             yield session

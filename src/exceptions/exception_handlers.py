@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def register_exception_handlers(app):
+    """Register exception handlers for FastAPI app."""
     app.add_exception_handler(RequestValidationError,
                               validation_exception_handler)
     app.add_exception_handler(RebateException, rebate_exception_handler)
@@ -17,6 +18,7 @@ def register_exception_handlers(app):
 
 
 def rebate_exception_handler(request: Request, exc: RebateException):
+    """Handle RebateException - Custom exception for Rebate API."""
     logger.exception(f"Exception occurred while handling request "
                      f"{request.method} {request.url.path}", exc_info=exc)
     errors = [get_error_object(str(exc))]
@@ -32,6 +34,7 @@ def generic_exception_handler(request: Request, exc: Exception):
 
 def validation_exception_handler(request: Request,
                                  exc: RequestValidationError):
+    """Handle Exception raised during pydantic model validation"""
     errors = [
         get_error_object(f"{error['loc'][-1]}: {error['msg']}")
         for error in exc.errors()

@@ -16,6 +16,12 @@ class RebateClaimDAO(GenericDAO):
         super().__init__(RebateClaim)
 
     async def create(self, data):
+        """
+        Insert a new row into the database.
+        The function ensures that only one claim exists for a transaction and
+        claim amount shouldn't exceed the maximum rebate amount for the
+        transaction
+        """
         try:
             transaction_id = data["transaction_id"]
             claim_amount = data["claim_amount"]
@@ -56,15 +62,14 @@ class RebateClaimDAO(GenericDAO):
                     "claim_status": ClaimStatus.PENDING.value,
                 }
 
-                record_id = await session.execute(
-                    insert(self.model).values(**claim_data).returning(
-                        self.model.id)
+                result = await session.execute(
+                    insert(self.model)
+                    .values(**claim_data)
+                    .returning(self.model)
                 )
-                await session.commit()
-
-                new_claim = await session.get(self.model,
-                                              record_id.scalar_one())
+                new_claim = result.scalar_one()
                 session.expunge_all()
+                await session.commit()
                 return new_claim
         except Exception as e:
             logger.error(f"Error creating claim: {e}")

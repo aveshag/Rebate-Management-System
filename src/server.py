@@ -37,6 +37,9 @@ def __register_routes(app):
 
 
 async def register_server():
+    """
+    Entry point for the rebate management system.
+    """
     app = __init_app()
 
     register_exception_handlers(app)

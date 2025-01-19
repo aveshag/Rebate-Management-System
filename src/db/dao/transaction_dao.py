@@ -44,21 +44,23 @@ class TransactionDAO(GenericDAO):
                     raise ValidationsExceptions(
                         "Transaction start date must fall within the rebate program's period.")
 
-                record_id = await session.execute(
-                    insert(self.model).values(**data).returning(
-                        self.model.__table__.c.id)
+                result = await session.execute(
+                    insert(self.model)
+                    .values(**data)
+                    .returning(self.model)
                 )
-                await session.commit()
-
-                new_record = await session.get(
-                    self.model, record_id.scalar_one())
+                new_record = result.scalar_one()
                 session.expunge_all()
+                await session.commit()
                 return new_record
         except Exception as e:
             logger.error(f"Error creating record: {e}")
             raise e
 
     async def get_transaction_with_rebate(self, transaction_id):
+        """
+            Retrieves a transaction along with its computed rebate amount.
+        """
         try:
             async with self.db.get_session_context() as session:
                 query = (

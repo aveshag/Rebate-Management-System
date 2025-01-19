@@ -69,13 +69,15 @@ class GenericDAO:
         :param data: A dictionary of model columns and their values.
         """
         try:
-            async with self.db.get_session_context() as session:
-                record_id = await session.execute(insert(self.model).values(
-                    **data).returning(self.model.__table__.c.id))
-                await session.commit()
-                new_record = await session.get(self.model,
-                                               record_id.scalar_one())
+            async with (self.db.get_session_context() as session):
+                result = await session.execute(
+                    insert(self.model)
+                    .values(**data)
+                    .returning(self.model)
+                )
+                new_record = result.scalar_one()
                 session.expunge_all()
+                await session.commit()
                 return new_record
         except IntegrityError as e:
             self.raise_integrity_error(e)
