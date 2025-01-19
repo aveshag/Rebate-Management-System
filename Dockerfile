@@ -8,8 +8,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src ./src
 COPY main.py .
 COPY run.sh .
+COPY wait-for-it.sh .
 
+RUN chmod +x wait-for-it.sh
 RUN chmod +x run.sh
+
 EXPOSE $APP_PORT
 
 CMD ["./run.sh"]

@@ -26,3 +26,4 @@ services:
       - postgres
     ports:
       - "${APP_PORT}:${APP_PORT}"
+    entrypoint: ["./wait-for-it.sh", "${DB_HOST}:${DB_PORT}", "--", "./run.sh"]
