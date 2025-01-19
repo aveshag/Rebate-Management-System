@@ -1,4 +1,5 @@
 import logging
+from os import environ
 
 from fastapi import FastAPI
 from uvicorn import Config, Server
@@ -20,9 +21,8 @@ def __init_app():
 
 
 async def start_server(app):
-    # TODO: use env variables
-    host = "0.0.0.0"
-    port = 8420
+    host = environ.get('HOST', "0.0.0.0")
+    port = int(environ.get('PORT', 5432))
 
     logger.info(f"Starting server on {host}:{port}")
     server_config = Config(app=app, host=host, port=port,

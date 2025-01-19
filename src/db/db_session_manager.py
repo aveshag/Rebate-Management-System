@@ -1,6 +1,6 @@
 import contextlib
-import os
 import threading
+from os import environ
 
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
@@ -22,11 +22,11 @@ class Singleton(type):
 
 
 def build_db_url() -> str:
-    username = os.environ.get('DB_USERNAME')
-    password = os.environ.get('DB_PASSWORD')
-    host = os.environ.get('DB_HOST')
-    port = os.environ.get('DB_PORT')
-    db_name = os.environ.get('DB_NAME')
+    username = environ.get('DB_USERNAME', "postgres")
+    password = environ.get('DB_PASSWORD', "postgres")
+    host = environ.get('DB_HOST', "0.0.0.0")
+    port = environ.get('DB_PORT', 5432)
+    db_name = environ.get('DB_NAME', "rebate")
     return f"postgresql+asyncpg://{username}:{password}@{host}:{port}/{db_name}"
 
 
@@ -38,9 +38,9 @@ class DBSessionManager(metaclass=Singleton):
         self.session = None
         self.db_url = build_db_url()
 
-        self.pool_size = int(os.environ.get('DB_POOL_SIZE', 5))
-        self.max_overflow = int(os.environ.get('DB_MAX_OVERFLOW', 20))
-        self.pool_recycle_timeout = int(os.environ.get(
+        self.pool_size = int(environ.get('DB_POOL_SIZE', 5))
+        self.max_overflow = int(environ.get('DB_MAX_OVERFLOW', 20))
+        self.pool_recycle_timeout = int(environ.get(
             'DB_POOL_RECYCLE_TIMEOUT', 30))
 
         if self._engine is None:
