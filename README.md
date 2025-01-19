@@ -3,6 +3,38 @@
 A rebate management system that handles rebate program data, calculates rebates, and provides endpoints for basic
 reporting
 
+# How to Run
+Before you proceed, ensure you have cloned the repository and navigated into the project directory:
+
+   ```
+   git clone git@github.com:aveshag/Rebate-Management-System.git
+   cd Rebate-Management-System
+   ```
+
+## Option 1: Using Docker Compose
+1. Make sure you have Docker and Docker Compose installed on your system.
+2. Set up the environment variables in the `.env` file located in the project root.
+3. Run the following command to start the application:
+   ```
+    docker compose up -d
+   ```
+4. To stop the Docker containers, run the following command:
+   ```
+   docker compose down
+   ```
+
+## Option 2: Running Locally
+1. Ensure a PostgreSQL database is running. You can run one locally using Docker:
+   ```
+   docker run --name rebate-postgres -e POSTGRES_USER=<user> -e POSTGRES_PASSWORD=<password> -e POSTGRES_DB=<db_name> -p 5432:5432 -d postgres
+   ```
+   Replace `<user>`, `<password>`, and `<db_name>` with your desired database credentials.
+2. Set up the environment variables in the `.env` file located in the project root.
+3. Run the application using the provided shell script:
+   ```
+   ./run_local.sh
+   ```
+
 # API Documentation
 
 ## Overview
@@ -319,3 +351,7 @@ The base URL for all API requests will depend on the deployment environment. Exa
 ```
 
 ---
+
+# Credits
+This project uses the [wait-for-it.sh](https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh) script for waiting for the database to be ready.
+
