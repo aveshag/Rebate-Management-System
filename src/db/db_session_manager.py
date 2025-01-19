@@ -4,6 +4,8 @@ from os import environ
 
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
+from src.utils import get_db_env_vars
+
 
 class Singleton(type):
     """
@@ -22,11 +24,7 @@ class Singleton(type):
 
 
 def build_db_url() -> str:
-    username = environ.get('DB_USERNAME', "postgres")
-    password = environ.get('DB_PASSWORD', "postgres")
-    host = environ.get('DB_HOST', "0.0.0.0")
-    port = environ.get('DB_PORT', 5432)
-    db_name = environ.get('DB_NAME', "rebate")
+    username, password, host, port, db_name = get_db_env_vars()
     return f"postgresql+asyncpg://{username}:{password}@{host}:{port}/{db_name}"
 
 

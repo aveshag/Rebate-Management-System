@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: rebate_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    command: postgres -p ${DB_PORT}
+
+  app:
+    build:
+      context: ./
+    container_name: rebate_app
+    restart: always
+    environment:
+      APP_PORT: ${APP_PORT}
+      DB_HOST: postgres
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    depends_on:
+      - postgres
+    ports:
+      - "${APP_PORT}:${APP_PORT}"

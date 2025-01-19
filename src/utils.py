@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 from enum import Enum
 from json import load
+from os import environ
 from typing import Optional, Match, List, Dict
 
 from fastapi.responses import JSONResponse
@@ -97,3 +98,12 @@ def parse_db_integrity_error_message(error_message):
         error_dict['value'] = key_value_match.group(2)
 
     return error_dict
+
+
+def get_db_env_vars():
+    username = environ.get('DB_USERNAME', "postgres")
+    password = environ.get('DB_PASSWORD', "postgres")
+    host = environ.get('DB_HOST', "0.0.0.0")
+    port = environ.get('DB_PORT', 5432)
+    db_name = environ.get('DB_NAME', "rebate")
+    return username, password, host, port, db_name

@@ -1,5 +1,4 @@
 #!/bin/bash
 
-alembic -c src/config/alembic.ini upgrade head
-
+echo "Running Rebate System..."
 python3 main.py

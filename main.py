@@ -1,6 +1,7 @@
 import asyncio
 from logging import config, getLogger
 
+from src.init_db import create_db_and_run_alembic
 from src.server import register_server
 from src.utils import get_logger_config
 
@@ -13,6 +14,10 @@ def __init_logger():
 
 async def main():
     __init_logger()
+
+    logger.info("Initializing database...")
+    await create_db_and_run_alembic()
+
     logger.info("Registering server...")
     await register_server()
 
